@@ -1,0 +1,37 @@
+$width: 1920;
+$margin: 345;
+$gutter: 30;
+$col_count: 12;
+$col: calc((($width - $margin * 2) - ($gutter * ($col_count - 1))) / $col_count);
+$color: rgb(10, 6, 11);
+
+$grid_margin: percentage(calc($margin / $width));
+$grid_gutter: percentage(calc($gutter / ($width - $margin * 2)));
+$grid_width: percentage(calc($col / ($width - $margin * 2)));
+
+
+@mixin col($_count, $_add: 0) {
+  width: calc(#{$grid_width * $_count + $grid_gutter * ($_count - 1)} + #{$_add}px);
+}
+
+@mixin grid() {
+  position: relative;
+  min-height: 100vh;
+
+  &::after {
+    content: '';
+    position: absolute;
+    z-index: 1000;
+    top: 0;
+    bottom: 0;
+    left: $grid_margin;
+    right: $grid_margin;
+    opacity: 0.15;
+    background: repeating-linear-gradient(90deg, $color 0, $color $grid_width, transparent $grid_width, transparent $grid_width + $grid_gutter);
+    pointer-events: none;
+  }
+}
+
+@mixin wrapper() {
+  margin: 0 $grid_margin;
+}
